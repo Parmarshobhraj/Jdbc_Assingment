@@ -1,0 +1,54 @@
+jdbc_ansquery
+
+1. Select unique job from EMP table
+Ans :- SELECT DISTINCT Job FROM emp_table;
+2. List the details of the emps in asc order of the Dptnos and desc of Jobs?
+Ans :- SELECT * FROM emp_table ORDER BY Deptno ASC,Job DESC;
+3. Display all the unique job groups in the descending order?
+Ans :- SELECT DISTINCT Job FROM emp_table ORDER BY Job DESC;
+4. List the emps who joined before 1981. 
+Ans :- SELECT * FROM emp_table WHERE HIREDATE < '1981-01-01';
+5. List the Empno, Ename, Sal, Daily sal of all emps in the asc order of Annsal. 
+Ans :- SELECT Empno,Ename,Sal,Sal/30 AS "Daily Sal",Sal*12 AS "AnnSal" FROM emp_table ORDER BY Sal*12 ASC;
+6. List the Empno, Ename, Sal, Exp of all emps working for Mgr 7369.
+Ans :- SELECT Empno, Ename, Sal, TIMESTAMPDIFF(YEAR, HIREDATE, CURDATE()) AS Exp FROM emp_table WHERE MGR = 7369;
+7. Display all the details of the emps who's Comm. Is more than their Sal?
+Ans :- SELECT * FROM emp_table WHERE Comm > Sal;
+8. List the emps who are either \lquote CLERK or ANALYST in the Desc order.
+Ans :- SELECT * FROM emp_table WHERE Job IN ('clerk','analyst') ORDER BY Job DESC;
+9. List the emps Who Annual sal ranging from 22000 and 45000. 
+Ans :- SELECT * FROM emp_table WHERE Sal*12 BETWEEN 22000 AND 45000;
+10. List the Enames those are starting with 'S' and with five characters. 
+Ans :- SELECT * FROM emp_table WHERE Ename LIKE 'S____';
+11. List the emps whose Empno not starting with digit78.
+Ans :- SELECT * FROM emp_table WHERE Empno NOT LIKE '78%';
+12. List all the Clerks of Deptno 20.
+Ans :- SELECT * FROM emp_table WHERE Job='clerk' AND Deptno=20;
+13. List the Emps who are senior to their own MGRS. 
+Ans :- select * from emp_table w,emp_table m where w.mgr = m.empno and w.hiredate < m.hiredate;
+14. List the Emps of Deptno 20 who's Jobs are same as Deptno10. 
+Ans :-  Select * from emp_table where deptno=20 and job in (select job from emp_table where deptno=10) ;
+15. List the Emps who's Sal is same as FORD or SMITH in desc order of Sal. 
+Ans :- SELECT * FROM emp_table WHERE Sal IN (SELECT Sal FROM emp_table WHERE Ename IN ('ford','smith') )ORDER BY Sal DESC;
+16. List the emps whose jobs same as SMITH or ALLEN. 
+Ans :- SELECT * FROM emp_table WHERE Job IN ('SMITH', 'ALLEN');
+17. Any jobs of deptno 10 those that are not found in deptno 20. 
+Ans :- SELECT DISTINCT Job FROM emp_table WHERE deptno = 10 AND Job NOT IN ( SELECT DISTINCT Job FROM emp_table WHERE deptno = 20 );
+18. Find the highest sal of EMP table. 
+Ans :- SELECT MAX(Sal) FROM emp_table;
+19. Find details of highest paid employee. 
+Ans :- SELECT * FROM emp_table WHERE Sal = (SELECT MAX(Sal) FROM emp_table);
+20. Find the total sal given to the MGR. 
+Ans :- SELECT SUM(Sal) FROM emp_table WHERE Job='manager';
+21. List the emps whose names contains 'A' . 
+Ans :- SELECT * FROM emp_table WHERE Ename LIKE '%A%';
+22. Find all the emps who earn the minimum Salary for each job wise in ascendingorder.
+Ans :- SELECT E.* FROM emp_table E JOIN (SELECT Job, MIN(Sal) AS MinSal FROM emp_table GROUP BY Job) M ON E.Job = M.Job AND E.Sal = M.MinSal ORDER BY E.Job ASC;
+23. List the emps whose sal greater than Blake's sal. 
+Ans :- SELECT * FROM emp_table WHERE Sal > (SELECT Sal FROM emp_table WHERE Ename = 'BLAKE');
+24. Create view v1 to select ename, job, dname, loc whose deptno are same. 
+Ans :- CREATE VIEW v1AS SELECT E.ename, E.job, D.dname, D.loc FROM emp_table E JOIN dept_table D ON E.deptno = D.deptno;
+25. Create a procedure with dno as input parameter to fetch ename and dname.
+Ans :- CREATE PROCEDURE GetEmployeeDetails(IN dno INT) BEGIN SELECT E.ename, D.dname FROM emp_table E JOIN DEPT D ON E.deptno = D.deptno WHERE E.deptno = dno; END;
+26. Add column Pin with bigint data type in table student. 
+Ans:- ALTER TABLE student_table ADD Pin BIGINT;
